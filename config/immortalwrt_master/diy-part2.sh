@@ -49,6 +49,8 @@ fi
 rm -rf package/luci-app-amlogic
 git clone -b main https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 #
+# 设置默认主题为 argon
+echo "CONFIG_PACKAGE_luci-theme-argon=y" >> .config
 # Apply patches
 # git apply ../config/patches/{0001*,0002*}.patch --directory=feeds/luci
 #
