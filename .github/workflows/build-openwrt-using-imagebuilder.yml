@@ -15,19 +15,17 @@ on:
       releases_branch:
         description: "Select the releases branch"
         required: false
-        default: "immortalwrt:25.12.0"
+        default: "openwrt:25.12.5"
         type: choice
         options:
-          - openwrt:25.12.4
-          - openwrt:25.12.3
-          - openwrt:25.12.2
-          - immortalwrt:25.12.0
+          - openwrt:25.12.5
+          - openwrt:24.10.7
+          - immortalwrt:25.12.1
           - immortalwrt:24.10.6
-          - immortalwrt:24.10.5
       openwrt_board:
         description: "Select device board"
         required: false
-        default: "s905d"
+        default: "all"
         type: choice
         options:
           - all
@@ -290,7 +288,7 @@ on:
       kernel_usage:
         description: "Set the tags of the stable kernel."
         required: false
-        default: "flippy"
+        default: "stable"
         type: choice
         options:
           - stable
@@ -299,16 +297,16 @@ on:
       openwrt_ip:
         description: "Set OpenWrt default IP address."
         required: false
-        default: "10.0.0.88"
+        default: "192.168.1.1"
       builder_name:
         description: "Set OpenWrt builder signature."
         required: false
-        default: "DaveyChiang"
+        default: "ophub"
         type: choice
         options:
           - ophub
           - angel
-          - DaveyChiang
+          - yourname
 
 env:
   TZ: Etc/UTC
@@ -316,7 +314,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ github.event.repository.owner.id == github.event.sender.id }}
     permissions:
       contents: write
@@ -337,7 +335,7 @@ jobs:
           sudo rm -f /swapfile /mnt/swapfile
           sudo apt-get -y update
           sudo apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
-          sudo apt-get -y install $(curl -fsSL https://ophub.org/ubuntu2404-make-openwrt-depends)
+          sudo apt-get -y install $(curl -fsSL https://ophub.org/ubuntu2604-make-openwrt-depends)
           sudo systemctl daemon-reload
           #sudo apt-get -y full-upgrade
           sudo apt-get -y autoremove --purge
@@ -422,7 +420,7 @@ jobs:
           gh_token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ### OpenWrt Image Information
-            - Default IP: `10.0.0.88`
+            - Default IP: `192.168.1.1`
             - Default username: `root`
             - Default password: `password`
             - Default WIFI name: `OpenWrt`
