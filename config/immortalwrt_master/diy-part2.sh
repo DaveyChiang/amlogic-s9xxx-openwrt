@@ -9,7 +9,7 @@
 # ------------------------------- Main source configuration -------------------------------
 #
 # Set the default LAN IP address
-default_ip="192.168.1.1"
+default_ip="10.0.0.88"
 ip_regex="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 # Override default IP if a valid custom IP is provided as the first argument
 [[ -n "${1}" && "${1}" != "${default_ip}" && "${1}" =~ ${ip_regex} ]] && {
@@ -48,6 +48,15 @@ fi
 # Add luci-app-amlogic
 rm -rf package/luci-app-amlogic
 git clone -b main https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
+# 设置默认主题为 argon
+echo "CONFIG_PACKAGE_luci-theme-argon=y" >> .config
+
+# LuCI 版本信息添加署名
+LUCI_VERSION="./feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js"
+
+if [ -f "$LUCI_VERSION" ]; then
+    sed -i "s/(luciversion || '')/(luciversion || '') + ' \/ Built by DaveyChiang'/g" "$LUCI_VERSION"
+fi
 #
 # Apply patches
 # git apply ../config/patches/{0001*,0002*}.patch --directory=feeds/luci
