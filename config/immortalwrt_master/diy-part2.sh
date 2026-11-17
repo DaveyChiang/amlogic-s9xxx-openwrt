@@ -53,6 +53,8 @@ echo "CONFIG_PACKAGE_luci-theme-argon=y" >> .config
 # LuCI 版本信息添加署名
 sed -i "s/(luciversion || '')/(luciversion || '') + ' \/ Built by DaveyChiang'/g" \
     ./feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+# Rust 修复
+sed -i 's/--set=llvm\.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' feeds/packages/lang/rust/Makefile
 #
 # Apply patches
 # git apply ../config/patches/{0001*,0002*}.patch --directory=feeds/luci
